@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>🌦️ Smart Weather Advice</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eef7f0;
+            color: #26352a;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 850px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #176b2c;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .search {
+            text-align: center;
+        }
+
+        input {
+            width: 70%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 13px 22px;
+            margin-top: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #176b2c;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #125622;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .location {
+            text-align: center;
+            color: #176b2c;
+            margin-top: 25px;
+        }
+
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .weather-box {
+            background: #f4faf5;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .weather-icon {
+            font-size: 32px;
+        }
+
+        .weather-box h3 {
+            color: #176b2c;
+            margin: 8px 0;
+        }
+
+        .weather-value {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .advice {
+            background: #fff8e1;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            border-left: 5px solid #f59e0b;
+        }
+
+        .advice h2 {
+            margin-top: 0;
+            color: #92400e;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #176b2c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+
+        .info {
+            margin-top: 20px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 600px) {
+
+            .weather-grid {
+                grid-template-columns: 1fr;
+            }
+
+            input {
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="card">
+
+        <h1>
+            🌦️ Smart Weather Advice
+        </h1>
+
+        <p class="subtitle">
+            Live weather information for better crop care
+        </p>
+
+
+        <!-- CITY SEARCH -->
+
+        <div class="search">
+
+            <form
+                method="POST"
+                action="{{ url_for('weather') }}"
+            >
+
+                <input
+                    type="text"
+                    name="city"
+                    placeholder="Enter city name, e.g. Delhi"
+                    required
+                >
+
+                <br>
+
+                <button type="submit">
+                    🔍 Check Weather
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        {% if advice and not weather_data %}
+
+            <div class="error">
+
+                {{ advice }}
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- LIVE WEATHER -->
+
+    {% if weather_data %}
+
+    <div class="card">
+
+        <h2 class="location">
+
+            📍 {{ weather_data.city }}
+
+        </h2>
+
+
+        <div class="weather-grid">
+
+
+            <!-- TEMPERATURE -->
+
+            <div class="weather-box">
+
+                <div class="weather-icon">
+                    🌡️
+                </div>
+
+                <h3>
+                    Temperature
+                </h3>
+
+                <div class="weather-value">
+
+                    {{ weather_data.temperature }} °C
+
+                </div>
+
+            </div>
+
+
+            <!-- CONDITION -->
+
+            <div class="weather-box">
+
+                <div class="weather-icon">
+                    🌤️
+                </div>
+
+                <h3>
+                    Condition
+                </h3>
+
+                <div class="weather-value">
+
+                    {{ weather_data.condition }}
+
+                </div>
+
+            </div>
+
+
+            <!-- HUMIDITY -->
+
+            <div class="weather-box">
+
+                <div class="weather-icon">
+                    💧
+                </div>
+
+                <h3>
+                    Humidity
+                </h3>
+
+                <div class="weather-value">
+
+                    {{ weather_data.humidity }} %
+
+                </div>
+
+            </div>
+
+
+            <!-- WIND -->
+
+            <div class="weather-box">
+
+                <div class="weather-icon">
+                    🌬️
+                </div>
+
+                <h3>
+                    Wind Speed
+                </h3>
+
+                <div class="weather-value">
+
+                    {{ weather_data.wind }} m/s
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- FARMING ADVICE -->
+
+        {% if advice %}
+
+        <div class="advice">
+
+            <h2>
+                🌱 Crop Care Advice
+            </h2>
+
+            <p>
+                {{ advice }}
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+        <p class="info">
+
+            💡 Use the live weather information
+            before irrigation, spraying and other
+            crop-care activities.
+
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- GENERAL FARMING TIPS -->
+
+    <div class="card">
+
+        <h2>
+            🌾 Basic Farming Tips
+        </h2>
+
+        <p>
+            💧 Avoid unnecessary irrigation during
+            heavy rainfall.
+        </p>
+
+        <p>
+            🌬️ Avoid spraying pesticides during
+            strong winds.
+        </p>
+
+        <p>
+            ☀️ Protect crops during extreme heat.
+        </p>
+
+        <p>
+            🌧️ Check soil moisture before watering
+            after rainfall.
+        </p>
+
+    </div>
+
+
+    <!-- BACK -->
+
+    <div style="text-align:center;">
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="back"
+        >
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>

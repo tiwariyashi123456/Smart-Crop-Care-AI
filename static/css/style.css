@@ -1,0 +1,98 @@
+body {
+    margin: 0;
+    padding: 0;
+    /* ہریالی اور فصلوں کا شاندار احساس دینے والا بیک گراؤنڈ گریڈینٹ */
+    background: linear-gradient(rgba(19, 78, 94, 0.75), rgba(45, 106, 79, 0.85)), 
+                url('https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto;
+    text-align: center;
+    /* گلاس والا ماڈرن ایفیکٹ (Glassmorphism) */
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    padding: 45px 35px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+h1 {
+    color: #1b4332;
+    font-size: 38px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+h3 {
+    color: #444;
+}
+
+p {
+    font-size: 16px;
+    color: #4f772d;
+    margin-bottom: 25px;
+    font-weight: 500;
+}
+
+/* لاگ ان اور سائن اپ بٹنوں کا شاندار ڈیزائن */
+button, .dashboard-btn {
+    padding: 12px 30px;
+    margin: 10px;
+    background: #2d6a4f;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(45, 106, 79, 0.3);
+    text-decoration: none;
+    display: inline-block;
+}
+
+button:hover, .dashboard-btn:hover {
+    background: #1b4332;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(27, 67, 50, 0.4);
+}
+
+input {
+    width: 80%;
+    padding: 14px 20px;
+    margin: 10px 0;
+    border: 2px solid #d8f3dc;
+    border-radius: 10px;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.3s ease;
+    background: #f1faee;
+}
+
+input:focus {
+    border-color: #2d6a4f;
+    background: #ffffff;
+    box-shadow: 0 0 8px rgba(45, 106, 79, 0.2);
+}
+
+.dashboard-btn {
+    background: #52b788;
+}
+
+.dashboard-btn:hover {
+    background: #40916c;
+}
+

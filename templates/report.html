@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Crop Analysis Report | Smart Crop Care AI</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f8f4;
+            color: #1f2937;
+        }
+
+        .header {
+            background: #166534;
+            color: white;
+            padding: 22px;
+        }
+
+        .header h1 {
+            margin-bottom: 6px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #166534;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            color: #166534;
+            margin-bottom: 12px;
+        }
+
+        .number {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .analytics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .chart-card h2 {
+            margin-bottom: 20px;
+            color: #166534;
+        }
+
+        .table-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .healthy {
+            color: #15803d;
+            font-weight: bold;
+        }
+
+        .diseased {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .empty {
+            padding: 20px;
+            text-align: center;
+            color: #777;
+        }
+
+        @media (max-width: 800px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .analytics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>🌱 Smart Crop Care AI</h1>
+        <p>Crop Analysis & AI Report</p>
+    </div>
+
+    <div class="container">
+
+        <a href="{{ url_for('dashboard') }}" class="back">
+            ← Back to Dashboard
+        </a>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>📊 Total Scans</h3>
+                <div class="number">
+                    {{ total }}
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🌿 Healthy</h3>
+                <div class="number">
+                    {{ healthy_count }}
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>⚠️ Diseased</h3>
+                <div class="number">
+                    {{ diseased_count }}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="analytics">
+
+            <div class="chart-card">
+                <h2>📈 Plant Health Overview</h2>
+                <canvas id="healthChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h2>🔎 Analysis Summary</h2>
+                <canvas id="diseaseChart"></canvas>
+            </div>
+
+        </div>
+
+        <div class="table-card">
+
+            <h2>📋 Disease Analysis Summary</h2>
+
+            {% if disease_summary %}
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Condition</th>
+                        <th>Number of Scans</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in disease_summary %}
+                    <tr>
+                        <td>
+                            {% if "healthy" in row["disease"].lower() %}
+                                <span class="healthy">
+                                    🌿 Healthy Plant
+                                </span>
+                            {% elif "diseased" in row["disease"].lower() %}
+                                <span class="diseased">
+                                    ⚠️ Diseased Plant
+                                </span>
+                            {% else %}
+                                {{ row["disease"] }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ row["total"] }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% else %}
+
+            <div class="empty">
+                No crop analysis records available yet.
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <script>
+        const healthyCount = {{ healthy_count }};
+        const diseasedCount = {{ diseased_count }};
+
+        new Chart(
+            document.getElementById("healthChart"),
+            {
+                type: "doughnut",
+                data: {
+                    labels: [
+                        "Healthy",
+                        "Diseased"
+                    ],
+                    datasets: [{
+                        data: [
+                            healthyCount,
+                            diseasedCount
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            }
+        );
+
+        new Chart(
+            document.getElementById("diseaseChart"),
+            {
+                type: "bar",
+                data: {
+                    labels: [
+                        "Healthy",
+                        "Diseased"
+                    ],
+                    datasets: [{
+                        label: "Number of Analyses",
+                        data: [
+                            healthyCount,
+                            diseasedCount
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            }
+        );
+    </script>
+
+</body>
+</html>

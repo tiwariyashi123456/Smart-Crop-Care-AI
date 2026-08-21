@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Scan History | Smart Crop Care AI</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 25px;
+            font-family: Arial, sans-serif;
+            background: #f1f8f3;
+            color: #26352a;
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: auto;
+        }
+
+        .header {
+            background: #176b2c;
+            color: white;
+            padding: 25px;
+            border-radius: 18px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.10);
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+        }
+
+        .header p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .summary-card h3 {
+            margin: 0 0 8px;
+            color: #176b2c;
+        }
+
+        .summary-number {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .history-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 18px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+
+            display: flex;
+            gap: 22px;
+            align-items: center;
+        }
+
+        .plant-image {
+            width: 190px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid #176b2c;
+            flex-shrink: 0;
+        }
+
+        .details {
+            flex: 1;
+        }
+
+        .details h3 {
+            margin-top: 0;
+            color: #176b2c;
+        }
+
+        .detail-row {
+            margin: 9px 0;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .healthy {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #e7f7eb;
+            color: #15803d;
+            font-weight: bold;
+        }
+
+        .diseased {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #ffeaea;
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .normal {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #f0f0f0;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .empty {
+            background: white;
+            padding: 50px 25px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .empty-icon {
+            font-size: 50px;
+        }
+
+        .buttons {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            margin: 6px;
+            background: #176b2c;
+            color: white;
+            text-decoration: none;
+            border-radius: 9px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #125622;
+        }
+
+        .report-btn {
+            background: #245c8a;
+        }
+
+        .report-btn:hover {
+            background: #1b486d;
+        }
+
+        .footer {
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+            margin-top: 25px;
+        }
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 12px;
+            }
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            .history-card {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: left;
+            }
+
+            .plant-image {
+                width: 100%;
+                height: 220px;
+            }
+
+            .btn {
+                width: 90%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>📋 Disease History</h1>
+
+        <p>
+            Your previous AI-assisted plant health analyses
+        </p>
+
+    </div>
+
+
+    {% if records %}
+
+
+    <!-- SUMMARY -->
+
+    <div class="summary">
+
+        <div class="summary-card">
+
+            <h3>
+                📊 Total Analyses
+            </h3>
+
+            <div class="summary-number">
+                {{ records|length }}
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <h3>
+                🤖 AI Analysis
+            </h3>
+
+            <div class="summary-number">
+                🌱
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- HISTORY -->
+
+    {% for record in records %}
+
+    <div class="history-card">
+
+
+        <!-- IMAGE -->
+
+        <img
+            src="{{ url_for('uploaded_file', filename=record['image_name']) }}"
+            class="plant-image"
+            alt="Plant Analysis Image"
+        >
+
+
+        <!-- DETAILS -->
+
+        <div class="details">
+
+            <h3>
+                🌿 Plant Analysis #{{ loop.index }}
+            </h3>
+
+
+            <div class="detail-row">
+
+                <span class="label">
+                    Disease / Condition:
+                </span>
+
+                {% set disease_name = record['disease']|string %}
+
+                {% if 'healthy' in disease_name|lower
+                      or 'class2' in disease_name|lower %}
+
+                    <span class="healthy">
+                        🌿 Healthy Plant
+                    </span>
+
+                {% elif 'diseased' in disease_name|lower
+                      or 'class1' in disease_name|lower %}
+
+                    <span class="diseased">
+                        ⚠️ Diseased Plant
+                    </span>
+
+                {% else %}
+
+                    <span class="normal">
+                        🔎 {{ disease_name }}
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span class="label">
+                    📊 Confidence:
+                </span>
+
+                {{ record['confidence'] }}
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span class="label">
+                    🕒 Analysis Date:
+                </span>
+
+                {{ record['date'] }}
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <span class="label">
+                    🖼️ Image:
+                </span>
+
+                {{ record['image_name'] }}
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+    {% endfor %}
+
+
+    {% else %}
+
+
+    <!-- EMPTY HISTORY -->
+
+    <div class="empty">
+
+        <div class="empty-icon">
+            📭
+        </div>
+
+        <h2>
+            No Analysis History
+        </h2>
+
+        <p>
+            अभी तक कोई plant analysis नहीं किया गया है।
+        </p>
+
+        <p>
+            Upload a plant image to start your first AI analysis.
+        </p>
+
+    </div>
+
+
+    {% endif %}
+
+
+    <!-- BUTTONS -->
+
+    <div class="buttons">
+
+        <a
+            href="{{ url_for('detect') }}"
+            class="btn"
+        >
+            🔍 Detect Another Plant
+        </a>
+
+
+        <a
+            href="{{ url_for('report') }}"
+            class="btn report-btn"
+        >
+            📊 Analysis Report
+        </a>
+
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="btn"
+        >
+            🏠 Back to Dashboard
+        </a>
+
+    </div>
+
+
+    <div class="footer">
+
+        🌱 Smart Crop Care AI —
+        AI-assisted plant health monitoring system
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>

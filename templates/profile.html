@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>👤 Farmer Profile | Smart Crop Care AI</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #eef7f0;
+            color: #26352a;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #176b2c;
+            color: white;
+            padding: 25px;
+        }
+
+        .header-content {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .header h1 {
+            margin-bottom: 6px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 850px;
+            margin: 35px auto;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .profile-top {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .avatar {
+            width: 95px;
+            height: 95px;
+            margin: auto;
+            border-radius: 50%;
+            background: #dff3e4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .profile-top h2 {
+            color: #176b2c;
+            margin-top: 15px;
+        }
+
+        .profile-top p {
+            color: #777;
+            margin-top: 6px;
+        }
+
+        .details {
+            margin-top: 25px;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px;
+            margin-bottom: 12px;
+            background: #f7faf8;
+            border-radius: 12px;
+        }
+
+        .detail-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            background: #e3f3e7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+        }
+
+        .detail-content {
+            flex: 1;
+        }
+
+        .detail-label {
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .detail-value {
+            font-size: 17px;
+            font-weight: bold;
+            color: #26352a;
+            word-break: break-word;
+        }
+
+        .farmer-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f0f8f2;
+            border-radius: 14px;
+        }
+
+        .farmer-section h3 {
+            color: #176b2c;
+            margin-bottom: 8px;
+        }
+
+        .farmer-section p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .buttons {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 22px;
+            margin: 5px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .dashboard-btn {
+            background: #176b2c;
+            color: white;
+        }
+
+        .dashboard-btn:hover {
+            background: #125622;
+        }
+
+        .logout-btn {
+            background: #dc2626;
+            color: white;
+        }
+
+        .logout-btn:hover {
+            background: #b91c1c;
+        }
+
+        .footer {
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+            margin: 25px 0;
+        }
+
+        @media (max-width: 600px) {
+
+            .container {
+                width: 94%;
+            }
+
+            .profile-card {
+                padding: 22px;
+            }
+
+            .detail-row {
+                padding: 14px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <div class="header-content">
+
+        <h1>🌱 Smart Crop Care AI</h1>
+
+        <p>
+            Farmer Profile
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- PROFILE -->
+
+<div class="container">
+
+    <div class="profile-card">
+
+
+        <!-- PROFILE TOP -->
+
+        <div class="profile-top">
+
+            <div class="avatar">
+                👨‍🌾
+            </div>
+
+            <h2>
+                {{ user["fullname"] }}
+            </h2>
+
+            <p>
+                Smart Crop Care AI Farmer
+            </p>
+
+        </div>
+
+
+        <!-- DETAILS -->
+
+        <div class="details">
+
+
+            <!-- NAME -->
+
+            <div class="detail-row">
+
+                <div class="detail-icon">
+                    👤
+                </div>
+
+                <div class="detail-content">
+
+                    <div class="detail-label">
+                        Full Name
+                    </div>
+
+                    <div class="detail-value">
+                        {{ user["fullname"] }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MOBILE -->
+
+            <div class="detail-row">
+
+                <div class="detail-icon">
+                    📱
+                </div>
+
+                <div class="detail-content">
+
+                    <div class="detail-label">
+                        Mobile Number
+                    </div>
+
+                    <div class="detail-value">
+                        {{ user["mobile"] }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="detail-row">
+
+                <div class="detail-icon">
+                    📧
+                </div>
+
+                <div class="detail-content">
+
+                    <div class="detail-label">
+                        Email Address
+                    </div>
+
+                    <div class="detail-value">
+                        {{ user["email"] }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- FARMER INFORMATION -->
+
+        <div class="farmer-section">
+
+            <h3>
+                🌾 About Your Account
+            </h3>
+
+            <p>
+                Your farmer profile is connected with
+                Smart Crop Care AI. You can use the
+                dashboard to detect crop diseases,
+                check weather conditions and view
+                your previous crop analysis.
+            </p>
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="buttons">
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="btn dashboard-btn"
+            >
+                🏠 Back to Dashboard
+            </a>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="btn logout-btn"
+            >
+                🚪 Logout
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="footer">
+
+        🌱 Smart Crop Care AI —
+        College Project Prototype
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

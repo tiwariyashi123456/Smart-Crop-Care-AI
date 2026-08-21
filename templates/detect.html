@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Detect Crop Disease</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f8f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
+        h1 {
+            color: #176b2c;
+        }
+
+        .upload-box {
+            margin-top: 30px;
+            padding: 25px;
+            border: 2px dashed #299447;
+            border-radius: 12px;
+        }
+
+        input[type="file"] {
+            margin: 20px;
+            padding: 10px;
+        }
+
+        button {
+            background: #16852e;
+            color: white;
+            border: none;
+            padding: 13px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #0d6821;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 25px;
+            color: #176b2c;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <h1>🌱 AI Plant Health Check</h1>
+
+    <p>
+        Upload a clear photo of any plant leaf.
+    </p>
+
+    <p>
+        🌸 Flower Leaf &nbsp; | &nbsp;
+        🌳 Tree Leaf &nbsp; | &nbsp;
+        🌿 Plant Leaf
+    </p>
+
+
+    <form
+        action="{{ url_for('detect') }}"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        <div class="upload-box">
+
+            <input
+                type="file"
+                name="crop_image"
+                accept=".jpg,.jpeg,.png,.webp"
+                required
+            >
+
+            <br><br>
+
+            <button type="submit">
+                🤖 Check Plant
+            </button>
+
+        </div>
+
+    </form>
+
+
+    <p>
+        Supported formats:
+        JPG, JPEG, PNG, WEBP
+    </p>
+
+
+    <a href="{{ url_for('dashboard') }}">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+
+</html>

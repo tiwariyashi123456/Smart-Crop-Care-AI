@@ -1,0 +1,10 @@
+# Virtual Environment
+venv/
+__pycache__/
+
+# Database (optional - अगर आप लोकल डेटाबेस गिटहब पर नहीं भेजना चाहते)
+# *.db
+
+# Model files (अगर बहुत बड़ी .h5 फाइल है, हालांकि गिटहब 100MB तक की फाइल लेता है)
+# model/model.h5
+config.py

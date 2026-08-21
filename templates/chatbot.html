@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Farming Assistant</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f4f8f4;
+
+            color: #26352a;
+
+            transition:
+                background 0.3s,
+                color 0.3s;
+        }
+
+
+        /* =========================
+           DARK MODE
+        ========================= */
+
+        body.dark-mode {
+
+            background: #121a15;
+
+            color: #e8f5e9;
+        }
+
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .container {
+
+            width: 90%;
+
+            max-width: 750px;
+
+            margin: 40px auto;
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.10);
+
+            transition:
+                background 0.3s,
+                color 0.3s;
+        }
+
+
+        body.dark-mode .container {
+
+            background: #1e2923;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.35);
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .header h1 {
+
+            color: #16852e;
+
+            margin: 0;
+        }
+
+
+        body.dark-mode .header h1 {
+
+            color: #6ee7a0;
+        }
+
+
+        /* =========================
+           THEME BUTTON
+        ========================= */
+
+        .theme-btn {
+
+            padding: 9px 14px;
+
+            border: none;
+
+            border-radius: 20px;
+
+            background: #26352a;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .question-box {
+
+            display: flex;
+
+            gap: 10px;
+
+            align-items: center;
+        }
+
+
+        .question-input {
+
+            flex: 1;
+
+            padding: 13px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            outline: none;
+        }
+
+
+        body.dark-mode .question-input {
+
+            background: #26332b;
+
+            color: white;
+
+            border-color: #53665a;
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        button {
+
+            cursor: pointer;
+        }
+
+
+        .ask-btn {
+
+            margin-top: 15px;
+
+            padding: 12px 25px;
+
+            background: #16852e;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+
+            font-size: 15px;
+        }
+
+
+        .ask-btn:hover {
+
+            background: #116b25;
+        }
+
+
+        .voice-btn {
+
+            padding: 12px 15px;
+
+            background: #245c8a;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 8px;
+
+            font-size: 18px;
+        }
+
+
+        .voice-btn:hover {
+
+            background: #19496e;
+        }
+
+
+        .speak-btn {
+
+            padding: 10px 16px;
+
+            background: #7045a0;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+        }
+
+
+        .speak-btn:hover {
+
+            background: #5b3685;
+        }
+
+
+        /* =========================
+           ANSWER
+        ========================= */
+
+        .answer-box {
+
+            margin-top: 25px;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            background: #f1f8f3;
+
+            border-left: 5px solid #16852e;
+
+            line-height: 1.6;
+        }
+
+
+        body.dark-mode .answer-box {
+
+            background: #26332b;
+
+            border-left-color: #6ee7a0;
+        }
+
+
+        .answer-title {
+
+            margin-top: 0;
+
+            color: #16852e;
+        }
+
+
+        body.dark-mode .answer-title {
+
+            color: #6ee7a0;
+        }
+
+
+        /* =========================
+           VOICE STATUS
+        ========================= */
+
+        #voiceStatus {
+
+            margin-top: 10px;
+
+            font-size: 14px;
+
+            color: #666;
+        }
+
+
+        body.dark-mode #voiceStatus {
+
+            color: #b9c5bd;
+        }
+
+
+        /* =========================
+           BACK BUTTON
+        ========================= */
+
+        .back {
+
+            display: inline-block;
+
+            margin-top: 25px;
+
+            color: #16852e;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+
+        body.dark-mode .back {
+
+            color: #6ee7a0;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .container {
+
+                margin: 20px auto;
+
+                padding: 20px;
+            }
+
+
+            .header {
+
+                align-items: flex-start;
+            }
+
+
+            .header h1 {
+
+                font-size: 24px;
+            }
+
+
+            .question-box {
+
+                flex-direction: column;
+            }
+
+
+            .question-input {
+
+                width: 100%;
+            }
+
+
+            .voice-btn {
+
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <div class="header">
+
+        <h1>
+            🤖 AI Farming Assistant
+        </h1>
+
+
+        <button
+            class="theme-btn"
+            id="themeButton"
+            onclick="toggleTheme()"
+        >
+            🌙 Dark
+        </button>
+
+    </div>
+
+
+    <!-- =========================
+         QUESTION FORM
+    ========================= -->
+
+    <form
+        method="POST"
+        onsubmit="stopSpeaking()"
+    >
+
+
+        <div class="question-box">
+
+
+            <input
+
+                id="questionInput"
+
+                class="question-input"
+
+                type="text"
+
+                name="question"
+
+                placeholder="Ask about crop, disease, water..."
+
+                required
+            >
+
+
+            <button
+
+                type="button"
+
+                class="voice-btn"
+
+                onclick="startVoiceInput()"
+
+                title="Speak your question"
+            >
+
+                🎤
+
+            </button>
+
+
+        </div>
+
+
+        <div id="voiceStatus">
+
+            Press 🎤 and speak your question.
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="ask-btn"
+        >
+
+            Ask Assistant
+
+        </button>
+
+
+    </form>
+
+
+    <!-- =========================
+         ANSWER
+    ========================= -->
+
+    {% if answer %}
+
+
+    <div class="answer-box">
+
+
+        <h3 class="answer-title">
+
+            🤖 Assistant:
+
+        </h3>
+
+
+        <p id="assistantAnswer">
+
+            {{ answer }}
+
+        </p>
+
+
+        <button
+
+            type="button"
+
+            class="speak-btn"
+
+            onclick="speakAnswer()"
+        >
+
+            🔊 Listen to Answer
+
+        </button>
+
+
+    </div>
+
+
+    {% endif %}
+
+
+    <!-- =========================
+         BACK
+    ========================= -->
+
+    <a
+
+        class="back"
+
+        href="{{ url_for('dashboard') }}"
+    >
+
+        ← Back to Dashboard
+
+    </a>
+
+
+</div>
+
+
+<script>
+
+
+    /* =====================================================
+       DARK / LIGHT MODE
+    ===================================================== */
+
+
+    function applyTheme() {
+
+
+        const savedTheme =
+            localStorage.getItem(
+                "cropcare-theme"
+            );
+
+
+        const button =
+            document.getElementById(
+                "themeButton"
+            );
+
+
+        if (savedTheme === "dark") {
+
+
+            document.body.classList.add(
+                "dark-mode"
+            );
+
+
+            button.innerHTML =
+                "☀️ Light";
+
+
+        } else {
+
+
+            document.body.classList.remove(
+                "dark-mode"
+            );
+
+
+            button.innerHTML =
+                "🌙 Dark";
+
+        }
+
+    }
+
+
+    function toggleTheme() {
+
+
+        const isDark =
+            document.body.classList.toggle(
+                "dark-mode"
+            );
+
+
+        if (isDark) {
+
+
+            localStorage.setItem(
+                "cropcare-theme",
+                "dark"
+            );
+
+
+        } else {
+
+
+            localStorage.setItem(
+                "cropcare-theme",
+                "light"
+            );
+
+        }
+
+
+        applyTheme();
+
+    }
+
+
+    /* =====================================================
+       VOICE INPUT
+    ===================================================== */
+
+
+    function startVoiceInput() {
+
+
+        const SpeechRecognition =
+            window.SpeechRecognition ||
+            window.webkitSpeechRecognition;
+
+
+        if (!SpeechRecognition) {
+
+
+            alert(
+                "Voice input आपके browser में supported नहीं है। Chrome में try करें।"
+            );
+
+
+            return;
+
+        }
+
+
+        const recognition =
+            new SpeechRecognition();
+
+
+        recognition.lang = "hi-IN";
+
+
+        recognition.continuous = false;
+
+
+        recognition.interimResults = false;
+
+
+        const status =
+            document.getElementById(
+                "voiceStatus"
+            );
+
+
+        status.innerText =
+            "🎤 सुन रहा हूँ... बोलिए";
+
+
+        recognition.start();
+
+
+        recognition.onresult =
+            function(event) {
+
+
+                const transcript =
+                    event.results[0][0].transcript;
+
+
+                document.getElementById(
+                    "questionInput"
+                ).value = transcript;
+
+
+                status.innerText =
+                    "✅ आपकी आवाज़ text में बदल गई। अब Ask Assistant दबाएँ।";
+
+            };
+
+
+        recognition.onerror =
+            function(event) {
+
+
+                status.innerText =
+                    "❌ Voice input में problem हुई। फिर से कोशिश करें।";
+
+                console.log(
+                    "Voice Error:",
+                    event.error
+                );
+
+            };
+
+
+        recognition.onend =
+            function() {
+
+
+                if (
+                    status.innerText.includes(
+                        "सुन रहा हूँ"
+                    )
+                ) {
+
+                    status.innerText =
+                        "🎤 Voice input समाप्त।";
+
+                }
+
+            };
+
+    }
+
+
+    /* =====================================================
+       VOICE OUTPUT
+    ===================================================== */
+
+
+    function speakAnswer() {
+
+
+        const answerElement =
+            document.getElementById(
+                "assistantAnswer"
+            );
+
+
+        if (!answerElement) {
+
+            return;
+
+        }
+
+
+        const text =
+            answerElement.innerText;
+
+
+        if (!text) {
+
+            return;
+
+        }
+
+
+        if (!window.speechSynthesis) {
+
+
+            alert(
+                "Voice output आपके browser में supported नहीं है।"
+            );
+
+
+            return;
+
+        }
+
+
+        window.speechSynthesis.cancel();
+
+
+        const speech =
+            new SpeechSynthesisUtterance(
+                text
+            );
+
+
+        speech.lang = "hi-IN";
+
+
+        speech.rate = 0.95;
+
+
+        speech.pitch = 1;
+
+
+        window.speechSynthesis.speak(
+            speech
+        );
+
+    }
+
+
+    /* =====================================================
+       STOP SPEAKING
+    ===================================================== */
+
+
+    function stopSpeaking() {
+
+
+        if (
+            window.speechSynthesis
+        ) {
+
+            window.speechSynthesis.cancel();
+
+        }
+
+    }
+
+
+    /* =====================================================
+       LOAD THEME
+    ===================================================== */
+
+
+    applyTheme();
+
+
+</script>
+
+
+</body>
+
+</html>
